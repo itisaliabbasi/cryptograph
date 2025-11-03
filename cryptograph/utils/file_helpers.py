@@ -24,3 +24,12 @@ def read_encrypted_file(path: str):
             raise ValueError("Header truncated or corrupt")
         ciphertext = f.read()
     return header_bytes, ciphertext
+
+def read_plain_file(path: str):
+    with open(path, "rb") as f:
+        plaintext = f.read()
+    return plaintext
+
+def write_plain_file(path: str, plaintext: bytes):
+    with open(path, "wb") as f:
+        f.write(plaintext)

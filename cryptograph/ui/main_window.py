@@ -64,15 +64,15 @@ class App(ctk.CTk):
         button_frame = ctk.CTkFrame(self)
         button_frame.pack(pady=10)
 
-        encrypt_btn = ctk.CTkButton(button_frame, text="🔒 Encrypt", command=self.encrypt_action, width=120)
+        encrypt_btn = ctk.CTkButton(button_frame, text="🔒 Encrypt", command=self.encrypt_action, width=120, fg_color="#1E90FF", hover_color="#63B8FF")
         encrypt_btn.grid(row=0, column=0, padx=20)
 
-        decrypt_btn = ctk.CTkButton(button_frame, text="🔓 Decrypt", command=self.decrypt_action, width=120)
+        decrypt_btn = ctk.CTkButton(button_frame, text="🔓 Decrypt", command=self.decrypt_action, width=120, fg_color="#32CD32", hover_color="#7CFC00")
         decrypt_btn.grid(row=0, column=1, padx=20)
 
         # ===== Status Bar =====
         status_label = ctk.CTkLabel(self, textvariable=self.status, text_color="gray", anchor="w")
-        status_label.pack(fill="x", padx=20, pady=(10, 0))
+        status_label.pack(fill="x", padx=20, pady=(40, 0))
 
     # ===== Event Functions =====
 

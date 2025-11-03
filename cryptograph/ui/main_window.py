@@ -1,4 +1,4 @@
-from pydoc import plaintext
+#from pydoc import plaintext
 
 import customtkinter as ctk
 from tkinter import filedialog, messagebox

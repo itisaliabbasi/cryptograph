@@ -1,4 +1,3 @@
-# tests/test_crypto.py
 import os
 from cryptograph.core.crypto import encrypt_bytes, decrypt_bytes
 from cryptograph.utils.file_helpers import write_encrypted_file, read_encrypted_file

@@ -1,5 +1,9 @@
+from pydoc import plaintext
+
 import customtkinter as ctk
 from tkinter import filedialog, messagebox
+from cryptograph.core.crypto import encrypt_bytes, decrypt_bytes
+from cryptograph.utils.file_helpers import read_encrypted_file, read_plain_file, write_plain_file, write_encrypted_file
 
 
 class App(ctk.CTk):
@@ -83,22 +87,38 @@ class App(ctk.CTk):
             self.status.set("File selected ✅")
 
     def encrypt_action(self):
-        if not self.password.get():
-            messagebox.showwarning("Warning", "Please enter a password!")
+        if not self.password.get() or self.selected_file.get() == "No file selected":
+            messagebox.showwarning("Warning", "Please select a file and enter a password!")
             return
 
-        # (بعداً اینجا فراخوانی crypto_engine.encrypt_file() انجام میشه)
-        self.status.set(f"Encrypting {self.selected_file.get()} with {self.algorithm.get()}-{self.mode.get()}...")
-        messagebox.showinfo("Encrypt", "Encryption started (simulation).")
+        try:
+            input_path = self.selected_file.get()
+            output_path = input_path + ".enc"
+            plaintext = read_plain_file(input_path)
+            header_bytes, cyphertext = encrypt_bytes(plaintext, self.password.get(), self.algorithm.get(), self.mode.get())
+            write_encrypted_file(output_path, header_bytes, cyphertext)
+            self.status.set(f"Encrypting {self.selected_file.get()} with {self.algorithm.get()}-{self.mode.get()}...")
+            messagebox.showinfo("Encrypt", "Encryption Completed.")
+        except Exception as e:
+            self.status.set(f"Error: {str(e)}")
+            messagebox.showerror("Error", str(e))
 
     def decrypt_action(self):
-        if not self.password.get():
-            messagebox.showwarning("Warning", "Please enter a password!")
+        if not self.password.get() or self.selected_file.get() == "No file selected":
+            messagebox.showwarning("Warning", "Please select a file and enter a password!")
             return
 
-        # (بعداً اینجا فراخوانی crypto_engine.decrypt_file() انجام میشه)
-        self.status.set(f"Decrypting {self.selected_file.get()} with {self.algorithm.get()}-{self.mode.get()}...")
-        messagebox.showinfo("Decrypt", "Decryption started (simulation).")
+        try:
+            input_path = self.selected_file.get()
+            output_path = input_path + ".dec"
+            header_bytes, ciphertext = read_encrypted_file(input_path)
+            plaintext = decrypt_bytes(header_bytes, ciphertext, self.password.get())
+            write_plain_file(output_path, plaintext)
+            self.status.set(f"Decrypting {self.selected_file.get()} with {self.algorithm.get()}-{self.mode.get()}...")
+            messagebox.showinfo("Decrypt", "Decryption Completed.")
+        except Exception as e:
+            self.status.set(f"Error: {str(e)}")
+            messagebox.showerror("Error", str(e))
 
 
 # فقط برای اجرا مستقیم

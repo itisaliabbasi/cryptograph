@@ -110,7 +110,7 @@ class App(ctk.CTk):
 
         try:
             input_path = self.selected_file.get()
-            output_path = input_path + ".dec"
+            output_path = input_path[:-4] #remove .enc
             header_bytes, ciphertext = read_encrypted_file(input_path)
             plaintext = decrypt_bytes(header_bytes, ciphertext, self.password.get())
             write_plain_file(output_path, plaintext)
